@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Seminar = require('../models/seminar')
+const Seminar = require('../models/seminarModels')
 
 // code here
 

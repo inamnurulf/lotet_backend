@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Kp = require('../models/kp')
+const kpModel = require('../models/kerjaPraktikModels')
 
 // code here
 

@@ -67,6 +67,29 @@ exports.patchKerjaPraktik = async (req, res, next) => {
 }
 
 exports.deleteKerjaPraktik = async (req, res, next) => {
+    try {
+        const { id } = req.params;
 
+        //cek valid ID 
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({
+                message: "No such kerjaPraktiks"
+            })
+        }
+
+        const kerjaPraktik = await kerjaPraktikModels.findOneAndDelete({ _id: id })
+
+        if (!kerjaPraktik) {
+            res.status(404).json({
+                message: "No such Kerja Praktik"
+            })
+        }
+
+        res.status(200).json(kerjaPraktik)
+        next();
+    } catch {
+        res.status(500).json({ error: "Server Error!" })
+        next();
+    }
 }
 

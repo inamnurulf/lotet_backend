@@ -6,6 +6,7 @@ router.post('/', kerjaPraktikControllers.postKerjaPraktik)
 
 router.get('/', kerjaPraktikControllers.getKerjaPraktik)
 
+router.get('/:id', kerjaPraktikControllers.getKerjaPraktikById)
 
 router.patch('/:id', kerjaPraktikControllers.patchKerjaPraktik)
 

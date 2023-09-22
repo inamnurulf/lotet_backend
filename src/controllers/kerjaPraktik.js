@@ -2,11 +2,68 @@ const { default: mongoose } = require('mongoose');
 const kerjaPraktikModels = require('../models/kerjaPraktikModels')
 
 exports.postKerjaPraktik = async (req, res, next) => {
+    try {
+        const newKerjaPraktik = req.body
+        if(!newKerjaPraktik || Object.keys(newKerjaPraktik).length === 0){
+            res.json({ error: 'Bad request. Request body is empty.' }).status(400);
+            next()
+        }
+
+        const kerjapraktik = new kerjaPraktikModels(
+        newKerjaPraktik
+        )
+        const savedKerjaPraktik = await kerjapraktik.save()
+        res.status(201).json(savedKerjaPraktik)
+        next()
+    } catch (error) {
+        console.error('Error creating Kerja Praktik:', error);
+        res.status(500).json({ error: 'Server Error!' });
+        next()
+    }
+    
 
 }
 
 exports.getKerjaPraktik = async (req, res, next) => {
+    try {
+        const kerjaPraktik = await kerjaPraktikModels.find();
+        if(!kerjaPraktik || kerjaPraktik.length === 0){
+            return res.status(404).json({
+                message: "No Kerja Praktik Found"
+            })
+        }
 
+        res.status(200).json(kerjaPraktik);
+        next();
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server Error!" });
+        next(error);
+        
+    }
+
+}
+
+exports.getKerjaPraktikById = async(req, res, next) =>{
+    const {id} = req.params
+    try {
+        const kerjaPraktik = await kerjaPraktikModels.findById(id);
+        if(!kerjaPraktik || kerjaPraktik.length === 0){
+            return res.status(404).json({
+                message: "No Kerja Praktik Found"
+            })
+        }
+
+        res.status(200).json(kerjaPraktik);
+        next();
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server Error!" });
+        next(error);
+        
+    }
 }
 
 exports.patchKerjaPraktik = async (req, res, next) => {

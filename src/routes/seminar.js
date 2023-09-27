@@ -7,8 +7,8 @@ const Seminar = require('../models/seminarModels')
 // Create
 // Read one
 // Read All
-// Read by date
-// Read by location
+// Read by eventTime
+// Read by location (kyknya gaperlu ga si?)
 // Update
 // Delete
 

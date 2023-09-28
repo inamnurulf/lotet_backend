@@ -67,8 +67,8 @@ exports.postSeminar = async (req, res, next) => {
             console.error(error);
             res.status(500).json({ error: "Server Error!" });
             next(error);
-        }
-    }
+        }
+    }
 
     exports.getSeminarById = async (req, res, next) => {
         const { id } = req.params

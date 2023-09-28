@@ -15,6 +15,10 @@ const seminarSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    eventTime:{
+        type: Date,
+        required: true,
+    },
     category: [{
         type: String,
         required: false,

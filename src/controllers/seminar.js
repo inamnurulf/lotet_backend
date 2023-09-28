@@ -120,24 +120,24 @@ exports.postSeminar = async (req, res, next) => {
 
             // Update the seminar document with the new data
             if (updatedData.title) {
-                seminarToUpdate.title = updatedData.title;
+                SeminarToUpdate.title = updatedData.title;
             }
             if (updatedData.user_id) {
-                seminarToUpdate.user_id = updatedData.user_id;
+                SeminarToUpdate.user_id = updatedData.user_id;
             }
             if (updatedData.details) {
-                seminarToUpdate.details = updatedData.details;
+                SeminarToUpdate.details = updatedData.details;
             }
 
             if (updatedData.image) {
-                seminarToUpdate.image = updatedData.image;
+                SeminarToUpdate.image = updatedData.image;
             }
 
             if (updatedData.category) {
-                seminarToUpdate.category = updatedData.category;
+                SeminarToUpdate.category = updatedData.category;
             }
 
-            const updatedSeminar = await seminarToUpdate.save();
+            const updatedSeminar = await SeminarToUpdate.save();
             res.status(200).json(updatedSeminar)
             next();
         } catch {
@@ -166,7 +166,7 @@ exports.postSeminar = async (req, res, next) => {
                 })
             }
 
-            res.status(200).jso(Seminar)
+            res.status(200).json(Seminar)
             next();
         } catch {
             res.status(500).json({ error: "Server Error!" })

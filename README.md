@@ -8,6 +8,11 @@
 4. In’am Nurul Fuady (21/479707/TK/52919)
 5. Yasmine ‘Arfa Zahira (21/478786/TK/52758)
 
+## API Documentation
+Here is a link to the full documentation of Lotet-API
+
+**https://documenter.getpostman.com/view/27791195/2s9YJZ45DQ**
+
 ## Prerequisites
 
 Before you begin, make sure you have the following installed:

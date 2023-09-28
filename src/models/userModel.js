@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
+const Schema = mongoose.Schema
+const userSchema = new Schema({
     
     // input model here
     name: {
@@ -25,8 +26,5 @@ const userSchema = new mongoose.Schema({
     },
 
 }, { timestamps: true })
-
-
-
 
 module.exports = mongoose.model('User', userSchema)

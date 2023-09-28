@@ -4,7 +4,7 @@ const seminarModels = require('../models/seminarModels')
 exports.postSeminar = async (req, res, next) => {
     try {
         const newSeminar = req.body
-        if (!newSeminar || Object.keys(newKerjaPraktik).length === 0) {
+        if (!newSeminar || Object.keys(newSeminar).length === 0) {
             res.json({ error: 'Bad request. Request body is empty.' }).status(400);
             next()
         }

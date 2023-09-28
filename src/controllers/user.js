@@ -33,8 +33,6 @@ exports.postUser = async (req, res, next) => {
         res.status(500).json({ error: 'Server Error!' });
         next()
     }
-    
-
 }
 
 exports.getUser = async (req, res, next) => {
@@ -65,18 +63,16 @@ exports.getUserById = async(req, res, next) =>{
         const User = await UserModels.findById(id);
         if(!User || User.length === 0){
             return res.status(404).json({
-                message: "No Kerja Praktik Found"
+                message: "No User Found"
             })
         }
-
         res.status(200).json(User);
         next();
         
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Server Error!" });
-        next(error);
-        
+        next(error); 
     }
 }
 
@@ -97,7 +93,7 @@ exports.patchUser = async (req, res, next) => {
 
         // Check if the Seeker exists in the database
         if (!UserToUpdate) {
-            res.json({ error: 'Kerja Praktik not found.' }).status(404);
+            res.json({ error: 'User not found.' }).status(404);
             next()
         }
 
@@ -107,8 +103,7 @@ exports.patchUser = async (req, res, next) => {
             next()
         }
 
-        // Update the kerja praktik document with the new data
-
+        // Update the user document with the new data
         if (updatedData.name) {
             UserToUpdate.name = updatedData.name;
         }
@@ -118,7 +113,9 @@ exports.patchUser = async (req, res, next) => {
         }
 
         if (updatedData.password) {
-            UserToUpdate.password = updatedData.password;
+            const salt = await bcrypt.genSalt(saltRounds);
+            const hashedPassword = await bcrypt.hash(updatedData.password, salt)
+            UserToUpdate.password = hashedPassword;
         }
         if (updatedData.nim) {
             UserToUpdate.nim = updatedData.nim;
@@ -149,7 +146,7 @@ exports.deleteUser = async (req, res, next) => {
         const User = await UserModels.findOneAndDelete({ _id: id })
         if (!User) {
             res.status(404).json({
-                message: "No such Kerja Praktik"
+                message: "No such User"
             })
         }
         res.status(200).json(User)

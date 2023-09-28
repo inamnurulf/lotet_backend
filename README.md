@@ -8,9 +8,6 @@
 4. In’am Nurul Fuady (21/479707/TK/52919)
 5. Yasmine ‘Arfa Zahira (21/478786/TK/52758)
 
-
-
-
 ## Prerequisites
 
 Before you begin, make sure you have the following installed:
@@ -25,25 +22,33 @@ Before you begin, make sure you have the following installed:
 ```shell
    git clone https://github.com/inamnurulf/lotet_backend.git
 ```
+
 2. Install project dependencies:
+
 ```shell
     npm install
 ```
+
 3. Create a .env file by copying the provided .env.example:
+
 ```shell
     cp .env.example .env
 ```
+
 4. Modify the values in the .env file to match your configuration needs.
-or you can use:
+   or you can use:
+
 ```shell
 DATABASE_URL='mongodb+srv://lotet:lotetmania123@lotet.nfdcwcy.mongodb.net/?retryWrites=true&w=majority'
+SALTROUNDS = 10
 ```
 
 ## Running the Development Server
+
 To start the development server, run the following command:
+
 ```shell
     npm run dev
 ```
+
 The server will start at http://localhost:3000 by default.
-
-

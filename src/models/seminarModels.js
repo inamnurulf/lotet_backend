@@ -7,6 +7,10 @@ const seminarSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    title:{
+        type: String,
+        require: true,
+    },
     details: {
         type: String,
         required: true,

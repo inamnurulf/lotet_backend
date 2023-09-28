@@ -119,10 +119,12 @@ exports.postSeminar = async (req, res, next) => {
             }
 
             // Update the seminar document with the new data
-            if (updatedData.name) {
-                seminarToUpdate.name = updatedData.name;
+            if (updatedData.title) {
+                seminarToUpdate.title = updatedData.title;
             }
-
+            if (updatedData.user_id) {
+                seminarToUpdate.user_id = updatedData.user_id;
+            }
             if (updatedData.details) {
                 seminarToUpdate.details = updatedData.details;
             }

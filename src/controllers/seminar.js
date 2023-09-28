@@ -166,7 +166,7 @@ exports.postSeminar = async (req, res, next) => {
                 })
             }
 
-            res.status(200).jso(Seminar)
+            res.status(200).json(Seminar)
             next();
         } catch {
             res.status(500).json({ error: "Server Error!" })

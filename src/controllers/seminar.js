@@ -1,5 +1,5 @@
 const { default: mongoose } = require('mongoose');
-const kerjaPraktikModels = require('../models/kerjaPraktikModels')
+const seminarModels = require('../models/seminarModels')
 
 exports.postSeminar = async (req, res, next) => {
     try {

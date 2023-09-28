@@ -3,6 +3,7 @@ const initDB = require('./src/lib/db')
 
 const kerjaPraktikRoute =require('./src/routes/kerjaPraktik')
 const seminarRoute =require('./src/routes/seminar')
+const userRoute = require('./src/routes/user')
 
 const express = require('express')
 const app = express()
@@ -16,3 +17,4 @@ app.listen(port, () => {
 })
 app.use('/kerjaPraktik', kerjaPraktikRoute)
 app.use('/seminar', seminarRoute)
+app.use('/user', userRoute)

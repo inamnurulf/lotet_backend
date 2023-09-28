@@ -41,34 +41,7 @@ exports.postSeminar = async (req, res, next) => {
         }
 
     }
-    
-    exports.getSeminarByDate = async (req,res,next) => {
-        
-        try{
-            const startDate = new Date(req.body.startDate);
-            const endDate = new Date(req.body.endDate);
 
-            // console.log("hit")
-
-            const seminar = await seminarModels.find({
-                eventTime: { $gte: startDate, $lte: endDate},
-            });
-
-            if(!seminar || seminar.length === 0){
-                return res.status(404).json({
-                    message: "No Seminar Found"
-                })
-            }
-
-            res.status(200).json(seminar)
-            next();
-
-        }catch (error){
-            console.error(error);
-            res.status(500).json({ error: "Server Error!" });
-            next(error);
-        }
-    }
 
 
     exports.getSeminarById = async (req, res, next) => {

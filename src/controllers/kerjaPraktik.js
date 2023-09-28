@@ -95,9 +95,6 @@ exports.patchKerjaPraktik = async (req, res, next) => {
         }
 
         // Update the kerja praktik document with the new data
-        if (updatedData.name) {
-            kerjaPraktikToUpdate.name = updatedData.name;
-        }
 
         if (updatedData.image) {
             kerjaPraktikToUpdate.image = updatedData.image;

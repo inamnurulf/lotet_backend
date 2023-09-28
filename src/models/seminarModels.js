@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const seminarSchema = new mongoose.Schema({
     
     // input model here
-    name: {
+    user_id: {
         type: String,
         required: true,
     },

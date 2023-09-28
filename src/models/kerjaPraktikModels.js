@@ -6,7 +6,7 @@ const kerjaPraktikSchema = new Schema({
         type: String,
         required: true,
     },
-    name: {
+    user_id: {
         type: String,
         required: true,
     },

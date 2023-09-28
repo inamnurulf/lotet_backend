@@ -3,27 +3,26 @@ const mongoose = require('mongoose')
 const seminarSchema = new mongoose.Schema({
     
     // input model here
-    name:{
+    name: {
         type: String,
         required: true,
     },
-    details:{
+    details: {
         type: String,
         required: true,
     },
-    image:{
+    image: {
         type: String,
         required: true,
     },
-    eventTime:{
-        type: Date,
-        required: true,
-    },
-    category:[{
+    category: [{
         type: String,
         required: false,
     }]
 
-}, {timestamps: true})
+}, { timestamps: true })
+
+
+
 
 module.exports = mongoose.model('Seminar', seminarSchema)

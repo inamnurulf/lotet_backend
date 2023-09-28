@@ -25,9 +25,8 @@ exports.postKerjaPraktik = async (req, res, next) => {
 }
 
 exports.getKerjaPraktik = async (req, res, next) => {
-    const filter = req.body
     try {
-        const kerjaPraktik = await kerjaPraktikModels.find(filter);
+        const kerjaPraktik = await kerjaPraktikModels.find();
         if(!kerjaPraktik || kerjaPraktik.length === 0){
             return res.status(404).json({
                 message: "No Kerja Praktik Found"
@@ -127,22 +126,18 @@ exports.patchKerjaPraktik = async (req, res, next) => {
 exports.deleteKerjaPraktik = async (req, res, next) => {
     try {
         const { id } = req.params;
-
         //cek valid ID 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).json({
                 message: "No such kerjaPraktiks"
             })
         }
-
         const kerjaPraktik = await kerjaPraktikModels.findOneAndDelete({ _id: id })
-
         if (!kerjaPraktik) {
             res.status(404).json({
                 message: "No such Kerja Praktik"
             })
         }
-
         res.status(200).json(kerjaPraktik)
         next();
     } catch {
@@ -150,4 +145,3 @@ exports.deleteKerjaPraktik = async (req, res, next) => {
         next();
     }
 }
-

@@ -9,6 +9,8 @@ router.post('/', seminarControllers.postSeminar)
 
 router.get('/', seminarControllers.getSeminar)
 
+router.get('/search/byDate', seminarControllers.getSeminarByDate)
+
 router.get('/:id', seminarControllers.getSeminarById)
 
 router.patch('/:id', seminarControllers.patchSeminar)

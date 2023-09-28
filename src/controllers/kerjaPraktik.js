@@ -25,8 +25,9 @@ exports.postKerjaPraktik = async (req, res, next) => {
 }
 
 exports.getKerjaPraktik = async (req, res, next) => {
+    const filter = req.body
     try {
-        const kerjaPraktik = await kerjaPraktikModels.find();
+        const kerjaPraktik = await kerjaPraktikModels.find(filter);
         if(!kerjaPraktik || kerjaPraktik.length === 0){
             return res.status(404).json({
                 message: "No Kerja Praktik Found"

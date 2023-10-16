@@ -46,6 +46,7 @@ Before you begin, make sure you have the following installed:
 ```shell
 DATABASE_URL='mongodb+srv://lotet:lotetmania123@lotet.nfdcwcy.mongodb.net/?retryWrites=true&w=majority'
 SALTROUNDS = 10
+JWT_SECRET=sajdbkjsadbjksabkdhgvasyigdia7ushbdjkasbdiu
 ```
 
 ## Running the Development Server

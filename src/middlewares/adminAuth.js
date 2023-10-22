@@ -17,7 +17,7 @@ const requireAdmin = async (req, res, next) => {
         req.user = decoded;
         if (req.user && req.user.payload.role === "admin") {
           if(req.user.payload.verified !== true){
-            return res.status(401).json({ error: "Unverified" });
+            return res.status(401).json({ error: "Your account unverify, pelase verify your account" });
           }
             next();
           } else {

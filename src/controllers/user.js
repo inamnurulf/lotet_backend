@@ -22,7 +22,9 @@ exports.postUser = async (req, res, next) => {
   try {
     const newUser = req.body;
     if (!newUser || Object.keys(newUser).length === 0) {
-      return res.json({ error: "Bad request. Request body is empty." }).status(400);
+      return res
+        .json({ error: "Bad request. Request body is empty." })
+        .status(400);
       next();
     }
     const existingUser = await UserModels.findOne({
@@ -37,7 +39,7 @@ exports.postUser = async (req, res, next) => {
     const tokenverif = generateVerifyToken();
     const mailOptions = {
       from: `Lotet Verification <${process.env.MAIL_USERNAME}>`,
-      to: email,
+      to: newUser.email,
       subject: "Lotet Account Verification",
       html: `
         <main>
@@ -72,20 +74,10 @@ exports.postUser = async (req, res, next) => {
       token: tokenverif,
       nim: newUser.nim,
     });
-    const savedUser = await User.save();
 
-    const userResponse = {
-      name: savedUser.name,
-      email: savedUser.email,
-      token: generateToken({
-        _id: savedUser._id,
-        name: savedUser.name,
-        email: savedUser.email,
-        nim: savedUser.nim,
-        role: savedUser.role,
-      }),
-    };
-    return res.status(201).json(userResponse);
+    await User.save();
+
+    return res.status(201).json({ message: " Please verify ur account" });
   } catch (error) {
     console.error("Error creating User:", error);
     return res.status(500).json({ error: "Server Error!" });
@@ -114,15 +106,14 @@ exports.getUser = async (req, res, next) => {
         email: user.email,
         nim: user.nim,
         role: user.role,
+        verified: user.verified,
       });
       return res.cookie("Authorization", token).json({
         name: user.name,
         email: user.email,
-        token: token,
       });
     } else {
       return res.status(400);
-      throw new Error("Invalid Credentials");
     }
   } catch (error) {
     console.error(error);
@@ -137,7 +128,7 @@ exports.verifyuser = async (req, res, next) => {
 
     if (!userToVerify) {
       return res.status(404).json({
-        message: "Please Sign UP",
+        message: "Please Sign Up",
       });
     }
 
@@ -147,6 +138,8 @@ exports.verifyuser = async (req, res, next) => {
 
     if (verifytoken == userToVerify.token) {
       userToVerify.verified = true;
+      await userToVerify.save();
+      return res.status(200).json({ message: "Account has been verified" });
     } else {
       return res.status(401).json({ error: "Token false" });
     }
@@ -167,11 +160,11 @@ exports.getNewToken = async (req, res, next) => {
   }
 
   const tokenverif = generateVerifyToken();
-    const mailOptions = {
-      from: `Lotet Verification <${process.env.MAIL_USERNAME}>`,
-      to: email,
-      subject: "Lotet Account Verification",
-      html: `
+  const mailOptions = {
+    from: `Lotet Verification <${process.env.MAIL_USERNAME}>`,
+    to: email,
+    subject: "Lotet Account Verification",
+    html: `
         <main>
           <style>
           </style>
@@ -181,24 +174,24 @@ exports.getNewToken = async (req, res, next) => {
           </div>
         </main>
       `,
-    };
+  };
 
-    try {
-      await transporter.sendMail(mailOptions);
-    } catch (err) {
-      console.error(err);
-      return res
-        .status(500)
-        .send({
-          message: "Error occurred while sending email",
-          code: err.code,
-        })
-        .json({ error: "Error occurred while sending email" });
-    }
-    return res.status(201).json({message: "Token sended"});
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .send({
+        message: "Error occurred while sending email",
+        code: err.code,
+      })
+      .json({ error: "Error occurred while sending email" });
+  }
+  return res.status(201).json({ message: "Token sended" });
 };
 
 exports.signOut = async (req, res, next) => {
-  res.clearCookie("Authorization"); 
+  res.clearCookie("Authorization");
   res.status(200).json({ message: "You are now logged out." });
 };

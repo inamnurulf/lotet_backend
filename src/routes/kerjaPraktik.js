@@ -5,7 +5,7 @@ const kerjaPraktikControllers= require('../controllers/kerjaPraktik');
 
 router.post('/', kerjaPraktikControllers.postKerjaPraktik)
 
-router.get('/',userAuth, kerjaPraktikControllers.getKerjaPraktik)
+router.get('/', kerjaPraktikControllers.getKerjaPraktik)
 
 router.get('/:id', kerjaPraktikControllers.getKerjaPraktikById)
 

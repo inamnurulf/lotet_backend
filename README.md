@@ -47,6 +47,9 @@ Before you begin, make sure you have the following installed:
 DATABASE_URL='mongodb+srv://lotet:lotetmania123@lotet.nfdcwcy.mongodb.net/?retryWrites=true&w=majority'
 SALTROUNDS = 10
 JWT_SECRET=sajdbkjsadbjksabkdhgvasyigdia7ushbdjkasbdiu
+
+MAIL_USERNAME=fillitwithuremail@gmail.com
+MAIL_PASSWORD=fillitwithurgoogleapppassword
 ```
 
 ## Running the Development Server

@@ -158,6 +158,12 @@ exports.getNewToken = async (req, res, next) => {
       message: "Please Sign UP",
     });
   }
+  if (user.verified== true) {
+    return res.status(404).json({
+      message: "Your account has been verified.",
+    });
+  }
+
 
   const tokenverif = generateVerifyToken();
   const mailOptions = {

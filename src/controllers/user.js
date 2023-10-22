@@ -22,14 +22,14 @@ exports.postUser = async (req, res, next) => {
   try {
     const newUser = req.body;
     if (!newUser || Object.keys(newUser).length === 0) {
-      res.json({ error: "Bad request. Request body is empty." }).status(400);
+      return res.json({ error: "Bad request. Request body is empty." }).status(400);
       next();
     }
     const existingUser = await UserModels.findOne({
       $or: [{ nim: newUser.nim }, { email: newUser.email }],
     });
     if (existingUser) {
-      res
+      return res
         .status(400)
         .json({ error: "User with the same nim or email already exists." });
     }
@@ -54,7 +54,7 @@ exports.postUser = async (req, res, next) => {
       await transporter.sendMail(mailOptions);
     } catch (err) {
       console.error(err);
-      res
+      return res
         .status(500)
         .send({
           message: "Error occurred while sending email",
@@ -85,10 +85,10 @@ exports.postUser = async (req, res, next) => {
         role: savedUser.role,
       }),
     };
-    res.status(201).json(userResponse);
+    return res.status(201).json(userResponse);
   } catch (error) {
     console.error("Error creating User:", error);
-    res.status(500).json({ error: "Server Error!" });
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -98,13 +98,13 @@ exports.getUser = async (req, res, next) => {
     const user = await UserModels.findOne({ email });
 
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Please Sign UP",
       });
     }
 
     if (user.verified !== true) {
-      res.status(401).json({ error: "Unverified" });
+      return res.status(401).json({ error: "Unverified" });
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -115,18 +115,18 @@ exports.getUser = async (req, res, next) => {
         nim: user.nim,
         role: user.role,
       });
-      res.cookie("Authorization", token).json({
+      return res.cookie("Authorization", token).json({
         name: user.name,
         email: user.email,
         token: token,
       });
     } else {
-      res.status(400);
+      return res.status(400);
       throw new Error("Invalid Credentials");
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Server Error!" });
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -136,23 +136,22 @@ exports.verifyuser = async (req, res, next) => {
     const userToVerify = await UserModels.findOne({ email });
 
     if (!userToVerify) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Please Sign UP",
       });
     }
 
     if (userToVerify.verified === true) {
-      res.status(401).json({ error: "Account has been verified" });
+      return res.status(401).json({ error: "Account has been verified" });
     }
 
     if (verifytoken == userToVerify.token) {
       userToVerify.verified = true;
-      res.json({ message: "Account has been verified" }).status(200);
     } else {
-      res.status(401).json({ error: "Token false" });
+      return res.status(401).json({ error: "Token false" });
     }
   } catch {
-    res.status(500).json({ error: "Server Error!" });
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -162,7 +161,7 @@ exports.getNewToken = async (req, res, next) => {
   const user = await UserModels.findOne({ email });
 
   if (!user) {
-    res.status(404).json({
+    return res.status(404).json({
       message: "Please Sign UP",
     });
   }
@@ -188,7 +187,7 @@ exports.getNewToken = async (req, res, next) => {
       await transporter.sendMail(mailOptions);
     } catch (err) {
       console.error(err);
-      res
+      return res
         .status(500)
         .send({
           message: "Error occurred while sending email",
@@ -196,7 +195,7 @@ exports.getNewToken = async (req, res, next) => {
         })
         .json({ error: "Error occurred while sending email" });
     }
-    res.status(201).json({message: "Token sended"});
+    return res.status(201).json({message: "Token sended"});
 };
 
 exports.signOut = async (req, res, next) => {

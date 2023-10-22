@@ -5,18 +5,16 @@ exports.postKerjaPraktik = async (req, res, next) => {
   try {
     const newKerjaPraktik = req.body;
     if (!newKerjaPraktik || Object.keys(newKerjaPraktik).length === 0) {
-      res.json({ error: "Bad request. Request body is empty." }).status(400);
+      return res.json({ error: "Bad request. Request body is empty." }).status(400);
       next();
     }
 
     const kerjapraktik = new kerjaPraktikModels(newKerjaPraktik);
     const savedKerjaPraktik = await kerjapraktik.save();
-    res.status(201).json(savedKerjaPraktik);
-    next();
+    return res.status(201).json(savedKerjaPraktik);
   } catch (error) {
     console.error("Error creating Kerja Praktik:", error);
-    res.status(500).json({ error: "Server Error!" });
-    next();
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -30,12 +28,10 @@ exports.getKerjaPraktik = async (req, res, next) => {
       });
     }
 
-    res.status(200).json(kerjaPraktik);
-    next();
+    return res.status(200).json(kerjaPraktik);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Server Error!" });
-    next(error);
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -49,12 +45,10 @@ exports.getKerjaPraktikById = async (req, res, next) => {
       });
     }
 
-    res.status(200).json(kerjaPraktik);
-    next();
+    return res.status(200).json(kerjaPraktik);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Server Error!" });
-    next(error);
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -64,23 +58,20 @@ exports.patchKerjaPraktik = async (req, res, next) => {
 
     //cek valid ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "No such Missions " + id,
       });
-      next();
     }
     const kerjaPraktikToUpdate = await kerjaPraktikModels.findById(id);
 
     // Check if the Kerja Praktik exists in the database
     if (!kerjaPraktikToUpdate) {
-      res.json({ error: "Kerja Praktik not found." }).status(404);
-      next();
+      return res.json({ error: "Kerja Praktik not found." }).status(404);
     }
 
     const updatedData = req.body;
     if (!updatedData || Object.keys(updatedData).length === 0) {
-      res.json({ error: "Bad request. Request body is empty." }).status(400);
-      next();
+      return res.json({ error: "Bad request. Request body is empty." }).status(400);
     }
 
     // Update the kerja praktik document with the new data
@@ -101,11 +92,9 @@ exports.patchKerjaPraktik = async (req, res, next) => {
     }
 
     const updatedKerjaPraktik = await kerjaPraktikToUpdate.save();
-    res.status(200).json(updatedKerjaPraktik);
-    next();
+    return res.status(200).json(updatedKerjaPraktik);
   } catch {
-    res.status(500).json({ error: "Server Error!" });
-    next();
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -120,14 +109,12 @@ exports.deleteKerjaPraktik = async (req, res, next) => {
     }
     const kerjaPraktik = await kerjaPraktikModels.findOneAndDelete({ _id: id });
     if (!kerjaPraktik) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "No such Kerja Praktik",
       });
     }
-    res.status(200).json(kerjaPraktik);
-    next();
+    return res.status(200).json(kerjaPraktik);
   } catch {
-    res.status(500).json({ error: "Server Error!" });
-    next();
+    return res.status(500).json({ error: "Server Error!" });
   }
 };

@@ -11,6 +11,9 @@ const requireAuth = async (req, res, next) => {
         return res.status(401).json({ error: 'Unauthorized' });
       } else {
         req.user = decoded;
+        if(req.user.payload.verified !== true){
+          return res.status(401).json({ error: "Unverified" });
+        }
         next();
       }
     });

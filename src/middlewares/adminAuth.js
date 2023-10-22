@@ -12,6 +12,9 @@ const requireAdmin = async (req, res, next) => {
       } else {
         req.user = decoded;
         if (req.user && req.user.payload.role === "admin") {
+          if(req.user.payload.verified !== true){
+            return res.status(401).json({ error: "Unverified" });
+          }
             next();
           } else {
             return res.status(403).json({ error: "Forbidden" });

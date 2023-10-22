@@ -6,17 +6,14 @@ exports.postSeminar = async (req, res, next) => {
     const newSeminar = req.body;
     if (!newSeminar || Object.keys(newSeminar).length === 0) {
       res.json({ error: "Bad request. Request body is empty." }).status(400);
-      next();
     }
 
     const seminar = new seminarModels(newSeminar);
     const savedSeminar = await seminar.save();
     res.status(201).json(savedSeminar);
-    next();
   } catch (error) {
     console.error("Error creating Seminar:", error);
     res.status(500).json({ error: "Server Error!" });
-    next();
   }
 };
 
@@ -28,13 +25,10 @@ exports.getSeminar = async (req, res, next) => {
         message: "No Seminar Found",
       });
     }
-
     res.status(200).json(Seminar);
-    next();
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server Error!" });
-    next(error);
   }
 };
 
@@ -54,11 +48,9 @@ exports.getSeminarByDate = async (req, res, next) => {
     }
 
     res.status(200).json(seminar);
-    next();
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server Error!" });
-    next(error);
   }
 };
 
@@ -73,11 +65,9 @@ exports.getSeminarById = async (req, res, next) => {
     }
 
     res.status(200).json(Seminar);
-    next();
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server Error!" });
-    next(error);
   }
 };
 
@@ -90,20 +80,17 @@ exports.patchSeminar = async (req, res, next) => {
       res.status(404).json({
         message: "No such Missions " + id,
       });
-      next();
     }
     const SeminarToUpdate = await seminarModels.findById(id);
 
     // Check if the Seeker exists in the database
     if (!SeminarToUpdate) {
       res.json({ error: "Seminar not found." }).status(404);
-      next();
     }
 
     const updatedData = req.body;
     if (!updatedData || Object.keys(updatedData).length === 0) {
       res.json({ error: "Bad request. Request body is empty." }).status(400);
-      next();
     }
 
     // Update the seminar document with the new data
@@ -127,10 +114,8 @@ exports.patchSeminar = async (req, res, next) => {
 
     const updatedSeminar = await SeminarToUpdate.save();
     res.status(200).json(updatedSeminar);
-    next();
   } catch {
     res.status(500).json({ error: "Server Error!" });
-    next();
   }
 };
 
@@ -157,6 +142,5 @@ exports.deleteSeminar = async (req, res, next) => {
     next();
   } catch {
     res.status(500).json({ error: "Server Error!" });
-    next();
   }
 };

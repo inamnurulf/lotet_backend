@@ -1,12 +1,22 @@
 const { default: mongoose } = require("mongoose");
 const UserModels = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 const saltRounds = parseInt(process.env.SALTROUNDS, 10);
 const jwt = require("jsonwebtoken");
+const generateVerifyToken = require("../lib/generateTokenVerify");
 
 const generateToken = (payload) => {
   return jwt.sign({ payload }, process.env.JWT_SECRET, { expiresIn: "3d" });
 };
+
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+  },
+});
 
 exports.postUser = async (req, res, next) => {
   try {
@@ -22,14 +32,44 @@ exports.postUser = async (req, res, next) => {
       res
         .status(400)
         .json({ error: "User with the same nim or email already exists." });
-      return next();
     }
+
+    const tokenverif = generateVerifyToken();
+    const mailOptions = {
+      from: `Lotet Verification <${process.env.MAIL_USERNAME}>`,
+      to: email,
+      subject: "Lotet Account Verification",
+      html: `
+        <main>
+          <style>
+          </style>
+          <div>
+           <h2>Verify Your Account</h2>
+            <div>This is your token ${tokenverif}</div>
+          </div>
+        </main>
+      `,
+    };
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .send({
+          message: "Error occurred while sending email",
+          code: err.code,
+        })
+        .json({ error: "Error occurred while sending email" });
+    }
+
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(newUser.password, salt);
     const User = new UserModels({
       name: newUser.name,
       email: newUser.email,
       password: hashedPassword,
+      token: tokenverif,
       nim: newUser.nim,
     });
     const savedUser = await User.save();
@@ -46,11 +86,9 @@ exports.postUser = async (req, res, next) => {
       }),
     };
     res.status(201).json(userResponse);
-    next();
   } catch (error) {
     console.error("Error creating User:", error);
     res.status(500).json({ error: "Server Error!" });
-    next();
   }
 };
 
@@ -58,6 +96,16 @@ exports.getUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await UserModels.findOne({ email });
+
+    if (!user) {
+      res.status(404).json({
+        message: "Please Sign UP",
+      });
+    }
+
+    if (user.verified !== true) {
+      res.status(401).json({ error: "Unverified" });
+    }
 
     if (user && (await bcrypt.compare(password, user.password))) {
       let token = generateToken({
@@ -76,16 +124,82 @@ exports.getUser = async (req, res, next) => {
       res.status(400);
       throw new Error("Invalid Credentials");
     }
-
-    next();
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server Error!" });
-    next(error);
   }
 };
 
-exports.test = async (req, res, next) => {
-  console.log(req.user);
-  return res.status(200).json({ meassage: "DONE" });
+exports.verifyuser = async (req, res, next) => {
+  try {
+    const { email, verifytoken } = req.body;
+    const userToVerify = await UserModels.findOne({ email });
+
+    if (!userToVerify) {
+      res.status(404).json({
+        message: "Please Sign UP",
+      });
+    }
+
+    if (userToVerify.verified === true) {
+      res.status(401).json({ error: "Account has been verified" });
+    }
+
+    if (verifytoken == userToVerify.token) {
+      userToVerify.verified = true;
+      res.json({ message: "Account has been verified" }).status(200);
+    } else {
+      res.status(401).json({ error: "Token false" });
+    }
+  } catch {
+    res.status(500).json({ error: "Server Error!" });
+  }
+};
+
+exports.getNewToken = async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await UserModels.findOne({ email });
+
+  if (!user) {
+    res.status(404).json({
+      message: "Please Sign UP",
+    });
+  }
+
+  const tokenverif = generateVerifyToken();
+    const mailOptions = {
+      from: `Lotet Verification <${process.env.MAIL_USERNAME}>`,
+      to: email,
+      subject: "Lotet Account Verification",
+      html: `
+        <main>
+          <style>
+          </style>
+          <div>
+           <h2>Verify Your Account</h2>
+            <div>This is your token ${tokenverif}</div>
+          </div>
+        </main>
+      `,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .send({
+          message: "Error occurred while sending email",
+          code: err.code,
+        })
+        .json({ error: "Error occurred while sending email" });
+    }
+    res.status(201).json({message: "Token sended"});
+};
+
+exports.signOut = async (req, res, next) => {
+  res.clearCookie("Authorization"); 
+  res.status(200).json({ message: "You are now logged out." });
 };

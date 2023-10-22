@@ -24,6 +24,10 @@ const userSchema = new Schema(
       required: true,
       default: false,
     },
+    token:{
+      type: String,
+      required: true,
+    },
     role: {
       type: String,
       enum: ["admin", "user"],

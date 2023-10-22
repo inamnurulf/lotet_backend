@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const userAuth = require('../middlewares/userAuth')
 const kerjaPraktikControllers= require('../controllers/kerjaPraktik');
 
 router.post('/', kerjaPraktikControllers.postKerjaPraktik)

@@ -5,18 +5,15 @@ exports.postSeminar = async (req, res, next) => {
   try {
     const newSeminar = req.body;
     if (!newSeminar || Object.keys(newSeminar).length === 0) {
-      res.json({ error: "Bad request. Request body is empty." }).status(400);
-      next();
+      return res.json({ error: "Bad request. Request body is empty." }).status(400);
     }
 
     const seminar = new seminarModels(newSeminar);
     const savedSeminar = await seminar.save();
-    res.status(201).json(savedSeminar);
-    next();
+    return res.status(201).json(savedSeminar);
   } catch (error) {
     console.error("Error creating Seminar:", error);
-    res.status(500).json({ error: "Server Error!" });
-    next();
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -28,13 +25,10 @@ exports.getSeminar = async (req, res, next) => {
         message: "No Seminar Found",
       });
     }
-
-    res.status(200).json(Seminar);
-    next();
+    return res.status(200).json(Seminar);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Server Error!" });
-    next(error);
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -53,12 +47,10 @@ exports.getSeminarByDate = async (req, res, next) => {
       });
     }
 
-    res.status(200).json(seminar);
-    next();
+    return res.status(200).json(seminar);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Server Error!" });
-    next(error);
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -72,12 +64,10 @@ exports.getSeminarById = async (req, res, next) => {
       });
     }
 
-    res.status(200).json(Seminar);
-    next();
+    return res.status(200).json(Seminar);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Server Error!" });
-    next(error);
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -87,23 +77,20 @@ exports.patchSeminar = async (req, res, next) => {
 
     //cek valid ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "No such Missions " + id,
       });
-      next();
     }
     const SeminarToUpdate = await seminarModels.findById(id);
 
     // Check if the Seeker exists in the database
     if (!SeminarToUpdate) {
-      res.json({ error: "Seminar not found." }).status(404);
-      next();
+      return res.json({ error: "Seminar not found." }).status(404);
     }
 
     const updatedData = req.body;
     if (!updatedData || Object.keys(updatedData).length === 0) {
-      res.json({ error: "Bad request. Request body is empty." }).status(400);
-      next();
+      return res.json({ error: "Bad request. Request body is empty." }).status(400);
     }
 
     // Update the seminar document with the new data
@@ -126,11 +113,9 @@ exports.patchSeminar = async (req, res, next) => {
     }
 
     const updatedSeminar = await SeminarToUpdate.save();
-    res.status(200).json(updatedSeminar);
-    next();
+    return res.status(200).json(updatedSeminar);
   } catch {
-    res.status(500).json({ error: "Server Error!" });
-    next();
+    return res.status(500).json({ error: "Server Error!" });
   }
 };
 
@@ -148,15 +133,13 @@ exports.deleteSeminar = async (req, res, next) => {
     const Seminar = await seminarModels.findOneAndDelete({ _id: id });
 
     if (!Seminar) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "No such Seminar",
       });
     }
 
-    res.status(200).json(Seminar);
-    next();
+    return res.status(200).json(Seminar);
   } catch {
-    res.status(500).json({ error: "Server Error!" });
-    next();
+    return res.status(500).json({ error: "Server Error!" });
   }
 };

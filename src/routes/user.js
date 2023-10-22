@@ -8,4 +8,11 @@ router.post('/signUp', userControllers.postUser)
 
 router.get('/signIn', userControllers.getUser)
 
+router.post('/verify', userControllers.verifyuser)
+
+router.post('/signOut', userControllers.signOut)
+
+router.post('/getNewToken', userControllers.getNewToken)
+
+
 module.exports = router

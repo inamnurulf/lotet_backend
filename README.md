@@ -41,15 +41,15 @@ Before you begin, make sure you have the following installed:
 ```
 
 4. Modify the values in the .env file to match your configuration needs.
-   or you can use:
+   or you can use (you need to generate your email google app password if want to use your own email):
 
 ```shell
 DATABASE_URL='mongodb+srv://lotet:lotetmania123@lotet.nfdcwcy.mongodb.net/?retryWrites=true&w=majority'
 SALTROUNDS = 10
 JWT_SECRET=sajdbkjsadbjksabkdhgvasyigdia7ushbdjkasbdiu
 
-MAIL_USERNAME=fillitwithuremail@gmail.com
-MAIL_PASSWORD=fillitwithurgoogleapppassword
+MAIL_USERNAME=bantublestcheon@gmail.com
+MAIL_PASSWORD=wmleldlndhdhwaou
 ```
 
 ## Running the Development Server

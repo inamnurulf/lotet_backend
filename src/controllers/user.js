@@ -111,6 +111,10 @@ exports.getUser = async (req, res, next) => {
       return res.cookie("Authorization", token).json({
         name: user.name,
         email: user.email,
+        role: user.role,
+        nim: user.nim,
+        verified: user.verified,
+        token: token,
       });
     } else {
       return res.status(400);

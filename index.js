@@ -7,10 +7,17 @@ const userRoute = require('./src/routes/user')
 
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 80
 
 const db = initDB()
 app.use(express.json())
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTONS,PATCH,SENT');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+})
 
 app.listen(port, () => {
   console.log(`Server is running on port : ${port}`)

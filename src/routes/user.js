@@ -6,7 +6,7 @@ const requireAdmin = require('../middlewares/adminAuth');
 
 router.post('/signUp', userControllers.postUser)
 
-router.get('/signIn', userControllers.getUser)
+router.post('/signIn', userControllers.getUser)
 
 router.post('/verify', userControllers.verifyuser)
 

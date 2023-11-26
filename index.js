@@ -19,9 +19,11 @@ app.use((req, res, next) => {
   next();
 })
 
-app.listen(port, () => {
-  console.log(`Server is running on port : ${port}`)
-})
+// app.listen(port, () => {
+//   console.log(`Server is running on port : ${port}`)
+// })
 app.use('/kerjaPraktik', kerjaPraktikRoute)
 app.use('/seminar', seminarRoute)
 app.use('/user', userRoute)
+
+export default app;

@@ -4,6 +4,7 @@ const initDB = require('./src/lib/db')
 const kerjaPraktikRoute =require('./src/routes/kerjaPraktik')
 const seminarRoute =require('./src/routes/seminar')
 const userRoute = require('./src/routes/user')
+const customRoute = require('./src/routes/custom')
 
 const express = require('express')
 const app = express()
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 // })
 app.use('/kerjaPraktik', kerjaPraktikRoute)
 app.use('/seminar', seminarRoute)
+app.use('/custom', customRoute)
 app.use('/user', userRoute)
 
 export default app;

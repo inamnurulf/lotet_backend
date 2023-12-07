@@ -142,3 +142,19 @@ exports.deleteKerjaPraktik = async (req, res, next) => {
     return res.status(500).json({ error: "Server Error!" });
   }
 };
+
+exports.searchKerjaPraktik = async (req, res, next) =>{
+  try {
+    const {keyword} = req.params;
+
+    const searchResult = await kerjaPraktikModels.find({
+      $or: [
+        { title: { $regex: keyword, $options: 'i' } }, // Search in 'title' field (case-insensitive)
+        { details: { $regex: keyword, $options: 'i' } }, // Search in 'details' field (case-insensitive)
+      ],
+    })
+    return res.status(200).json(searchResult);
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};

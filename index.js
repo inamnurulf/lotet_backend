@@ -5,12 +5,13 @@ const kerjaPraktikRoute =require('./src/routes/kerjaPraktik')
 const seminarRoute =require('./src/routes/seminar')
 const userRoute = require('./src/routes/user')
 const customRoute = require('./src/routes/custom')
-// const bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 
 
-const cors = require('cors')
-const express = require('express')
 const app = express()
+app.use(cors());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 const port = 5000
 
 const db = initDB()

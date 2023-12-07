@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const seminarModels = require("../models/seminarModels");
+const userModel = require("../models/userModel");
 
 exports.postSeminar = async (req, res, next) => {
   try {
@@ -63,8 +64,21 @@ exports.getSeminarById = async (req, res, next) => {
         message: "No Seminar Found",
       });
     }
-
-    return res.status(200).json(Seminar);
+    const username = await userModel.findById(Seminar.user_id)
+    
+    if (!username) {
+      return res.status(404).json({
+        message: "No User Found",
+      });
+    }
+  
+    // Include both Seminar details and username in the response
+    return res.status(200).json({
+      Seminar: {
+        ...Seminar.toObject(), // Convert Seminar data to a plain object if needed
+        username: username.username, // Assuming 'username' is the property in userModel
+      },
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Server Error!" });

@@ -3,6 +3,11 @@ const seminarModels = require("../models/seminarModels");
 const kerjaPraktikModels = require("../models/kerjaPraktikModels");
 const UserModels = require("../models/userModel");
 
+const { default: mongoose } = require("mongoose");
+const seminarModels = require("../models/seminarModels");
+const kerjaPraktikModels = require("../models/kerjaPraktikModels");
+const UserModels = require("../models/userModel");
+
 exports.getNewCarousell = async (req, res, next) => {
   try {
     const latestKerjaPraktik = await kerjaPraktikModels
@@ -12,8 +17,8 @@ exports.getNewCarousell = async (req, res, next) => {
       .select({
         title: 1,
         image: 1
-      });
-
+      })
+      .lean(); 
     const latestSeminars = await seminarModels
       .find({})
       .sort({ createdAt: -1 })
@@ -21,7 +26,12 @@ exports.getNewCarousell = async (req, res, next) => {
       .select({
         title: 1,
         image: 1
-      });
+      })
+      .lean(); 
+
+    // Add type field to each item
+    latestKerjaPraktik.forEach((item) => (item.type = "kerjaPraktik"));
+    latestSeminars.forEach((item) => (item.type = "seminar"));
 
     const combinedResult = [...latestKerjaPraktik, ...latestSeminars];
 
@@ -46,3 +56,4 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
+

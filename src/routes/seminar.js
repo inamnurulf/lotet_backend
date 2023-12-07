@@ -9,6 +9,8 @@ router.get("/", seminarControllers.getSeminar);
 
 router.get("/search/byDate", seminarControllers.getSeminarByDate);
 
+router.get('/search/byUserID/:id', seminarControllers.getSeminarByUserId);
+
 router.get("/:id", seminarControllers.getSeminarById);
 
 router.patch("/:id", seminarControllers.patchSeminar);

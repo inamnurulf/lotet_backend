@@ -89,7 +89,7 @@ exports.getSeminarById = async (req, res, next) => {
       });
     }
     const username = await userModel.findById(Seminar.user_id)
-    
+
     if (!username) {
       return res.status(404).json({
         message: "No User Found",
@@ -100,7 +100,7 @@ exports.getSeminarById = async (req, res, next) => {
     return res.status(200).json({
       Seminar: {
         ...Seminar.toObject(), // Convert Seminar data to a plain object if needed
-        username: username.username, // Assuming 'username' is the property in userModel
+        username: username.name, // Assuming 'username' is the property in userModel
       },
     });
   } catch (error) {

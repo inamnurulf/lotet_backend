@@ -18,12 +18,12 @@ app.use(cors())
 app.options('*', cors());
 
 
-// app.listen(port, () => {
-//   console.log(`Server is running on port : ${port}`)
-// })
+app.listen(port, () => {
+  console.log(`Server is running on port : ${port}`)
+})
 app.use('/kerjaPraktik', kerjaPraktikRoute)
 app.use('/seminar', seminarRoute)
 app.use('/custom', customRoute)
 app.use('/user', userRoute)
 
-export default app;
+// export default app;

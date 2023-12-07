@@ -31,6 +31,7 @@ exports.postUser = async (req, res, next) => {
       $or: [{ nim: newUser.nim }, { email: newUser.email }],
     });
     if (existingUser && existingUser.verified) {
+      existingUser.token = null;
 
       const responseUser = {
         ...existingUser.toObject(),
@@ -43,6 +44,7 @@ exports.postUser = async (req, res, next) => {
     }
 
     if (existingUser && !existingUser.verified) {
+      existingUser.token = null;
 
       const responseUser = {
         ...existingUser.toObject(),
@@ -95,6 +97,8 @@ exports.postUser = async (req, res, next) => {
     });
 
     await User.save();
+    User.token = null;
+    
     const responseUser = {
       ...User.toObject(),
       message: "Please verify ur account",
@@ -154,7 +158,7 @@ exports.getUser = async (req, res, next) => {
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: error});
+    return res.status(500).json({ error: error });
   }
 };
 

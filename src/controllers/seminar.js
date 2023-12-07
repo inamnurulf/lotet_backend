@@ -33,6 +33,30 @@ exports.getSeminar = async (req, res, next) => {
   }
 };
 
+exports.getSeminarByUserId = async (req, res, next) => {
+    const {id} = req.params; 
+    try {
+        
+        const seminars = await seminarModels.find({
+            user_id: id,
+        });
+
+        if (!seminars || seminars.length === 0) {
+            return res.status(404).json({
+                message: "No Seminars Found for the User",
+            });
+        }
+
+        res.status(200).json(seminars);
+        next();
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server Error!" });
+        next(error);
+    }
+};
+
+
 exports.getSeminarByDate = async (req, res, next) => {
   try {
     const startDate = new Date(req.body.startDate);

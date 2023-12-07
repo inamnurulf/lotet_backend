@@ -9,7 +9,7 @@ const customRoute = require('./src/routes/custom')
 const cors = require('cors')
 const express = require('express')
 const app = express()
-const port = 3001
+const port = 5000
 
 const db = initDB()
 app.use(express.json())

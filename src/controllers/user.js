@@ -30,11 +30,18 @@ exports.postUser = async (req, res, next) => {
     const existingUser = await UserModels.findOne({
       $or: [{ nim: newUser.nim }, { email: newUser.email }],
     });
-    if (existingUser) {
+    if (existingUser && existingUser.verified) {
       return res
         .status(400)
-        .json({ error: "User with the same nim or email already exists." });
+        .json({ error: "User with the same nim or email already exists, and has been verified", needVerify: false });
     }
+    
+    if (existingUser && !existingUser?.verified) {
+      return res
+        .status(200)
+        .json({ error: "User with the same nim or email already exists, and need to verify", needVerify: true });
+    }
+    
 
     const tokenverif = generateVerifyToken();
     const mailOptions = {

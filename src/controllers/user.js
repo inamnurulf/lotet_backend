@@ -41,7 +41,7 @@ exports.postUser = async (req, res, next) => {
 
       return res.status(400).json(responseUser);
     }
-    
+
     if (existingUser && !existingUser.verified) {
 
       const responseUser = {
@@ -53,7 +53,7 @@ exports.postUser = async (req, res, next) => {
 
       return res.status(200).json(responseUser);
     }
-    
+
 
     const tokenverif = generateVerifyToken();
     const mailOptions = {
@@ -97,7 +97,7 @@ exports.postUser = async (req, res, next) => {
     await User.save();
     const responseUser = {
       ...User.toObject(),
-      message : "Please verify ur account",
+      message: "Please verify ur account",
       needVerify: true,
     };
 
@@ -120,7 +120,17 @@ exports.getUser = async (req, res, next) => {
     }
 
     if (user.verified !== true) {
-      return res.status(401).json({ error: "Unverified" });
+      return res.status(401).json(
+        {
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          nim: user.nim,
+          verified: user.verified,
+          token: token,
+          error: "Unverified",
+          needVerify: true,
+        });
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -186,7 +196,7 @@ exports.getNewToken = async (req, res, next) => {
       message: "Please Sign UP",
     });
   }
-  if (user.verified== true) {
+  if (user.verified == true) {
     return res.status(404).json({
       message: "Your account has been verified.",
     });

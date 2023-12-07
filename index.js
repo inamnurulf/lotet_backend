@@ -15,6 +15,7 @@ const db = initDB()
 app.use(express.json())
 
 app.use(cors())
+app.options('*', cors());
 
 
 // app.listen(port, () => {

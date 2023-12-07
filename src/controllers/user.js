@@ -32,20 +32,26 @@ exports.postUser = async (req, res, next) => {
     });
     if (existingUser && existingUser.verified) {
 
-      existingUser.error = "User with the same nim or email already exists, and has been verified"
-      existingUser.needVerify= false 
-      return res
-        .status(400)
-        .json(existingUser);
+      const responseUser = {
+        ...existingUser.toObject(),
+        error:
+          "User with the same nim or email already exists, and has been verified",
+        needVerify: false,
+      };
+
+      return res.status(400).json(responseUser);
     }
     
-    if (existingUser && !existingUser?.verified) {
+    if (existingUser && !existingUser.verified) {
 
-      existingUser.error = "User with the same nim or email already exists, and need to verify"
-      existingUser.needVerify= true 
-      return res
-        .status(200)
-        .json(existingUser);
+      const responseUser = {
+        ...existingUser.toObject(),
+        error:
+          "User with the same nim or email already exists, and need to verify",
+        needVerify: true,
+      };
+
+      return res.status(200).json(responseUser);
     }
     
 
@@ -89,10 +95,13 @@ exports.postUser = async (req, res, next) => {
     });
 
     await User.save();
+    const responseUser = {
+      ...User.toObject(),
+      message : "Please verify ur account",
+      needVerify: true,
+    };
 
-    User.message = "Please verify ur account";
-
-    return res.status(201).json(User);
+    return res.status(201).json(responseUser);
   } catch (error) {
     console.error("Error creating User:", error);
     return res.status(500).json({ error: error });

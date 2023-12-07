@@ -155,7 +155,7 @@ exports.getUser = async (req, res, next) => {
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Server Error!" });
+    return res.status(500).json({ error: error});
   }
 };
 

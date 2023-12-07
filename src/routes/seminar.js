@@ -11,6 +11,8 @@ router.get("/search/byDate", seminarControllers.getSeminarByDate);
 
 router.get('/search/byUserID/:id', seminarControllers.getSeminarByUserId);
 
+router.get('/search/byKeyword/:keyword', seminarControllers.searchSeminar);
+
 router.get("/:id", seminarControllers.getSeminarById);
 
 router.patch("/:id", seminarControllers.patchSeminar);

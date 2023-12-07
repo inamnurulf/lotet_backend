@@ -165,7 +165,6 @@ exports.patchSeminar = async (req, res, next) => {
 exports.deleteSeminar = async (req, res, next) => {
   try {
     const { id } = req.params;
-
     //cek valid ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({
@@ -186,3 +185,19 @@ exports.deleteSeminar = async (req, res, next) => {
     return res.status(500).json({ error: "Server Error!" });
   }
 };
+
+exports.searchSeminar = async (req, res, next) => {
+  try {
+    const {keyword} = req.params;
+
+    const searchResult = await seminarModels.find({
+      $or: [
+        { title: { $regex: keyword, $options: 'i' } }, // Search in 'title' field (case-insensitive)
+        { details: { $regex: keyword, $options: 'i' } }, // Search in 'details' field (case-insensitive)
+      ],
+    })
+    return res.status(200).json(searchResult);
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}

@@ -80,7 +80,7 @@ exports.postUser = async (req, res, next) => {
     return res.status(201).json({ message: " Please verify ur account" });
   } catch (error) {
     console.error("Error creating User:", error);
-    return res.status(500).json({ error: "Server Error!" });
+    return res.status(500).json({ error: error });
   }
 };
 

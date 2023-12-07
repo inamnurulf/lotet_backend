@@ -6,6 +6,7 @@ const seminarRoute =require('./src/routes/seminar')
 const userRoute = require('./src/routes/user')
 const customRoute = require('./src/routes/custom')
 
+const cors = require('cors')
 const express = require('express')
 const app = express()
 const port = 80
@@ -13,12 +14,8 @@ const port = 80
 const db = initDB()
 app.use(express.json())
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTONS,PATCH,SENT');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-})
+app.use(cors())
+
 
 // app.listen(port, () => {
 //   console.log(`Server is running on port : ${port}`)

@@ -31,15 +31,21 @@ exports.postUser = async (req, res, next) => {
       $or: [{ nim: newUser.nim }, { email: newUser.email }],
     });
     if (existingUser && existingUser.verified) {
+
+      existingUser.error = "User with the same nim or email already exists, and has been verified"
+      existingUser.needVerify= false 
       return res
         .status(400)
-        .json({ error: "User with the same nim or email already exists, and has been verified", needVerify: false });
+        .json(existingUser);
     }
     
     if (existingUser && !existingUser?.verified) {
+
+      existingUser.error = "User with the same nim or email already exists, and need to verify"
+      existingUser.needVerify= true 
       return res
         .status(200)
-        .json({ error: "User with the same nim or email already exists, and need to verify", needVerify: true });
+        .json(existingUser);
     }
     
 
@@ -84,7 +90,9 @@ exports.postUser = async (req, res, next) => {
 
     await User.save();
 
-    return res.status(201).json({ message: " Please verify ur account" });
+    User.message = "Please verify ur account";
+
+    return res.status(201).json(User);
   } catch (error) {
     console.error("Error creating User:", error);
     return res.status(500).json({ error: error });

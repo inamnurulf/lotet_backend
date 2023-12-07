@@ -111,6 +111,12 @@ exports.patchSeminar = async (req, res, next) => {
     if (updatedData.category) {
       SeminarToUpdate.category = updatedData.category;
     }
+    if(updatedData.location){
+      SeminarToUpdate.location = updatedData.location;
+    }
+    if(updatedData.additional){
+      SeminarToUpdate.additional = updatedData.additional;
+    }
 
     const updatedSeminar = await SeminarToUpdate.save();
     return res.status(200).json(updatedSeminar);

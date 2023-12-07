@@ -14,6 +14,10 @@ const seminarSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    location:{
+      type: String,
+      require: true
+    },
     image: {
       type: String,
       required: true,
@@ -28,6 +32,10 @@ const seminarSchema = new mongoose.Schema(
         required: false,
       },
     ],
+    additional:{
+      type: String,
+      required: false
+    }
   },
   { timestamps: true }
 );

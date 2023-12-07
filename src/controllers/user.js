@@ -127,7 +127,6 @@ exports.getUser = async (req, res, next) => {
           role: user.role,
           nim: user.nim,
           verified: user.verified,
-          token: token,
           error: "Unverified",
           needVerify: true,
         });

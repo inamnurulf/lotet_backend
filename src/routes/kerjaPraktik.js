@@ -9,6 +9,8 @@ router.get('/', kerjaPraktikControllers.getKerjaPraktik)
 
 router.get('/:id', kerjaPraktikControllers.getKerjaPraktikById)
 
+router.get('/search/byUserID/:id', kerjaPraktikControllers.getKerjaPraktikByUserId)
+
 router.patch('/:id', kerjaPraktikControllers.patchKerjaPraktik)
 
 router.delete('/:id', kerjaPraktikControllers.deleteKerjaPraktik)

@@ -35,6 +35,30 @@ exports.getKerjaPraktik = async (req, res, next) => {
   }
 };
 
+exports.getKerjaPraktikByUserId = async (req, res, next) => {
+  const {id} = req.params; 
+  try {
+      
+      const kerjaPraktik = await kerjaPraktikModels.find({
+          user_id: id,
+      });
+
+      if (!kerjaPraktik || kerjaPraktik.length === 0) {
+          return res.status(404).json({
+              message: "No KerjaPraktik Found for the User",
+          });
+      }
+
+      res.status(200).json(kerjaPraktik);
+      next();
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server Error!" });
+      next(error);
+  }
+};
+
+
 exports.getKerjaPraktikById = async (req, res, next) => {
   const { id } = req.params;
   try {

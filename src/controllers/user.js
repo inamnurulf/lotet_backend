@@ -98,7 +98,7 @@ exports.postUser = async (req, res, next) => {
 
     await User.save();
     User.token = null;
-    
+
     const responseUser = {
       ...User.toObject(),
       message: "Please verify ur account",
@@ -146,6 +146,7 @@ exports.getUser = async (req, res, next) => {
         verified: user.verified,
       });
       return res.cookie("Authorization", token).json({
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,

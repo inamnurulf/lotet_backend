@@ -6,6 +6,7 @@ const seminarRoute =require('./src/routes/seminar')
 const userRoute = require('./src/routes/user')
 const customRoute = require('./src/routes/custom')
 const bodyParser = require('body-parser')
+const express = require('express')
 
 
 const app = express()

@@ -95,13 +95,12 @@ exports.getSeminarById = async (req, res, next) => {
         message: "No User Found",
       });
     }
-  
+    const {...SeminarData} = Seminar.toObject()
     // Include both Seminar details and username in the response
     return res.status(200).json({
-      Seminar: {
-        ...Seminar.toObject(), // Convert Seminar data to a plain object if needed
-        username: username.name, // Assuming 'username' is the property in userModel
-      },
+   
+        ...SeminarData, 
+        username: username.name,
     });
   } catch (error) {
     console.error(error);
